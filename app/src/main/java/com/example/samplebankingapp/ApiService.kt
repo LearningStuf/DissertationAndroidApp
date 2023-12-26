@@ -13,11 +13,25 @@ interface ApiService {
     @POST("register")
     fun registerUser(@Body requestBody: RegisterBody): Call<RegisterResponse>
 
+    @POST("login")
+    fun loginUser(@Body requestBody: LoginBody): Call<LoginResponse>
+
+
 }
 
 data class RegisterResponse (
     @SerializedName("message")
     val message: String
+)
+data class LoginResponse (
+    @SerializedName("token")
+    val token: String
+)
+data class LoginBody (
+    @SerializedName("username")
+    val username: String,
+    @SerializedName("password")
+    val password: String
 )
 
 data class RegisterBody (
