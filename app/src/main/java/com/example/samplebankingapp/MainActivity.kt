@@ -31,7 +31,7 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-        sharedPreferences = getSharedPreferences("myAppCache", Context.MODE_PRIVATE)
+        sharedPreferences = getSharedPreferences("LoginSessions", Context.MODE_PRIVATE)
         usernameInput = findViewById(R.id.username_input)
         passwordInput = findViewById(R.id.password_input)
         loginButton = findViewById(R.id.login_btn)
@@ -76,9 +76,9 @@ class MainActivity : AppCompatActivity() {
             ) {
                 if(response.code().equals(200)){
                     val editor = sharedPreferences.edit()
-                    editor.putString("token", response.body()?.token) // Replace "key" and "value" with your data
+                    editor.putString(usernameInput.text.toString(), response.body()?.token) // Replace "key" and "value" with your data
                     editor.apply()
-                    Log.i("JWT Token", "${response.body()?.token}")
+                    Log.i(usernameInput.text.toString(), "${response.body()?.token}")
                     val intent = Intent(this@MainActivity, RegistrationActivity::class.java)
                     startActivity(intent)
 
