@@ -1,5 +1,6 @@
 package com.example.samplebankingapp
 
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
@@ -53,11 +54,11 @@ class RegistrationActivity : AppCompatActivity() {
                     "Value of the passwords ",
                     "First password $password Second password $confirmPassword"
                 )
-
-                if (password.equals(confirmPassword)) {
-                    performRegisterUser()
-
-                    Log.i("Password Match", "Password you enterd matches")
+//                if(username.isEmpty() || password.isEmpty() || confirmPassword.isEmpty() || dateOfBirth.isEmpty() || gender.isEmpty()){
+//                    showAlert("Error", "Need to enter all the fields")
+//                }
+                 if (password.equals(confirmPassword)) {
+                    showSetPinDialog()
                 } else {
                     showAlert(
                         "Password doesn't match",
@@ -78,11 +79,15 @@ class RegistrationActivity : AppCompatActivity() {
         builder.setTitle(title)
             .setMessage(message)
             .setPositiveButton("OK") { dialog, _ ->
-                // Continue with registration or handle as needed
+                if(title.equals("Success Registration")){
+                    val intent = Intent(this@RegistrationActivity, MainActivity::class.java)
+                    startActivity(intent)
+                }
                 dialog.dismiss()
             }
             .setIcon(android.R.drawable.ic_dialog_alert)
             .show()
+
     }
 
     private fun  showSetPinDialog() {
@@ -97,10 +102,9 @@ class RegistrationActivity : AppCompatActivity() {
             val enteredPin = input.text.toString()
             // Handle the entered PIN here
             if (enteredPin.isNotBlank()) {
-                // PIN input is not empty, perform actions with the PIN
-                // For example, save the PIN to preferences or database
+                performRegisterUser(enteredPin)
             } else {
-                // PIN input is empty, handle error or inform the user
+                showAlert("Error", "You have entered an incorrect pin")
             }
             dialog.dismiss()
         }
@@ -111,6 +115,12 @@ class RegistrationActivity : AppCompatActivity() {
 
         builder.setIcon(android.R.drawable.ic_dialog_info)
         builder.show()
+        Log.i(
+            "Alert Dialog",
+            "Lets see what happens"
+        )
+
+
     }
 
     private fun performHealthCheck() {
@@ -143,13 +153,14 @@ class RegistrationActivity : AppCompatActivity() {
 
     }
 
-    private fun performRegisterUser() {
+    private fun performRegisterUser(pin : String) {
 
         val requestBody = RegisterBody(
             usernameInput.text.toString(),
             passwordInput.text.toString(),
             dateOfBirthInput.text.toString(),
-            genderInput.text.toString()
+            genderInput.text.toString(),
+            pin
         )
         val retrofitData = retrofitBuilder.registerUser(requestBody)
         retrofitData.enqueue(object : Callback<RegisterResponse?> {
@@ -157,12 +168,13 @@ class RegistrationActivity : AppCompatActivity() {
                 call: Call<RegisterResponse?>,
                 response: Response<RegisterResponse?>
             ) {
-                val responseBody = response.body()
-                if (responseBody != null) {
-                    Log.i(
-                        "RegisterCheck",
-                        "Value of health check ${responseBody.message}"
-                    )
+                val responseBody = response
+                if (response.code().equals(200)) {
+                    showAlert("Success Registration", "Your user has been registered")
+                }
+
+                else {
+                    showAlert("API Error", "There is an API error")
                 }
 
             }

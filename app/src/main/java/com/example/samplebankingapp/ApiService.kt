@@ -28,7 +28,9 @@ data class RegisterBody (
     @SerializedName("dateOfBirth")
     val dateOfBirth: String,
     @SerializedName("gender")
-    val gender: String
+    val gender: String,
+    @SerializedName("pin")
+    val pin: String
 )
 
 data class HealthResponse (
