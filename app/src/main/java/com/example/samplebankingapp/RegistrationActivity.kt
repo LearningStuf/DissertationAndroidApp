@@ -10,11 +10,7 @@ import android.widget.EditText
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AlertDialog
 import com.example.frauddetectionlibrary.FraudRegisterActivity
-import retrofit2.Call
-import retrofit2.Callback
-import retrofit2.Response
-import retrofit2.Retrofit
-import retrofit2.converter.gson.GsonConverterFactory
+
 
 class RegistrationActivity : AppCompatActivity() {
 
@@ -24,12 +20,6 @@ class RegistrationActivity : AppCompatActivity() {
     lateinit var dateOfBirthInput: EditText
     lateinit var genderInput: EditText
     lateinit var registerButton: Button
-
-    val retrofitBuilder = Retrofit.Builder()
-        .addConverterFactory(GsonConverterFactory.create())
-        .baseUrl("http://10.0.2.2:8000/")
-        .build()
-        .create(ApiService::class.java)
 
     val usernameKey = "username"
     val passwordKey = "password"
@@ -156,35 +146,7 @@ class RegistrationActivity : AppCompatActivity() {
         }
 
 
-    private fun performHealthCheck() {
 
-        val retrofitData = retrofitBuilder.healthCheck()
-        retrofitData.enqueue(object : Callback<HealthResponse?> {
-            override fun onResponse(
-                call: Call<HealthResponse?>,
-                response: Response<HealthResponse?>
-            ) {
-                val responseBody = response.body()
-                if (responseBody != null) {
-                    Log.i(
-                        "health Check",
-                        "Value of health check ${responseBody.status}"
-                    )
-                }
-
-            }
-
-            override fun onFailure(call: Call<HealthResponse?>, t: Throwable) {
-                Log.i(
-                    "health Check failure",
-                    "Value of health check ${t.message}"
-                )
-            }
-        })
-
-
-
-    }
 
 
 }

@@ -55,7 +55,9 @@ class FraudRegisterActivity : AppCompatActivity() {
             }
 
             override fun onFailure(call: Call<RegisterResponse?>, t: Throwable) {
-                TODO("Not yet implemented")
+                intent.putExtra(apiResponseKey, "Failure")
+                setResult(RESULT_CANCELED,intent)
+                finish()
             }
         })
 

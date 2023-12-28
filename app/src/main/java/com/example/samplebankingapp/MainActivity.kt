@@ -30,11 +30,7 @@ class MainActivity : AppCompatActivity() {
     val checkUserResponse = "check_user"
 
     private lateinit var sharedPreferences: SharedPreferences
-    val retrofitBuilder = Retrofit.Builder()
-        .addConverterFactory(GsonConverterFactory.create())
-        .baseUrl("http://10.0.2.2:8000/")
-        .build()
-        .create(ApiService::class.java)
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -47,37 +43,20 @@ class MainActivity : AppCompatActivity() {
 
         loginButton.setOnClickListener {
             var username = usernameInput.text.toString()
-//            Log.i("Test credentials", "username: $username and Password $password")
-//            This is where we are adding the library code
-//            val intent = Intent(this@MainActivity, FraudLoginActivity::class.java)
-//            startActivity(intent)
 
             val checkUserIntent = Intent(this@MainActivity, FraudCheckUser::class.java)
             checkUserIntent.putExtra(usernameKey, usernameInput.text.toString())
             checkUserActivityResultLauncher.launch(checkUserIntent)
 
-//            performLoginUser()
         }
 
         textRegister.setOnClickListener {
             Log.i("Click text", "Text has been clicked")
             val intent = Intent(this@MainActivity, RegistrationActivity::class.java)
-//            intent.putExtra(usernameKey,usernameInput.text.toString() )
             startActivity(intent)
         }
     }
 
-    // This is the activity listener
-//    val startForResult = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result: ActivityResult ->
-//
-//        if (result.resultCode == Activity.RESULT_OK && result.data?.getStringExtra(checkUserResponse)
-//                .equals("Successful")) {
-//
-//            val intent = result.data
-//            val response = intent?.getStringExtra(checkUserResponse).toString()
-//            showAlert("Important",response)
-//        }
-//    }
 
     private val checkUserActivityResultLauncher =
         registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
@@ -109,38 +88,4 @@ class MainActivity : AppCompatActivity() {
 
     }
 
-    private fun performLoginUser() {
-
-        val requestBody = LoginBody(
-            usernameInput.text.toString(),
-            passwordInput.text.toString()
-        )
-        val retrofitData = retrofitBuilder.loginUser(requestBody)
-        retrofitData.enqueue(object : Callback<LoginResponse?> {
-            override fun onResponse(
-                call: Call<LoginResponse?>,
-                response: Response<LoginResponse?>
-            ) {
-                if (response.code().equals(200)) {
-                    val editor = sharedPreferences.edit()
-                    editor.putString(
-                        usernameInput.text.toString(),
-                        response.body()?.token
-                    ) // Replace "key" and "value" with your data
-                    editor.apply()
-                    Log.i(usernameInput.text.toString(), "${response.body()?.token}")
-                    val intent = Intent(this@MainActivity, PaymentsActivity::class.java)
-                    startActivity(intent)
-
-                } else {
-                    showAlert("Error", "Incorrect credentials")
-                }
-            }
-
-            override fun onFailure(call: Call<LoginResponse?>, t: Throwable) {
-                Log.i("Login Failure", "Fail ${t.message.toString()}")
-            }
-        })
-
-    }
 }
