@@ -10,20 +10,13 @@ import android.util.Log
 import android.widget.Button
 import android.widget.EditText
 import android.widget.TextView
-import androidx.activity.result.ActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AlertDialog
 import com.example.frauddetectionlibrary.FraudCheckUser
-import com.example.frauddetectionlibrary.FraudLoginActivity
-import retrofit2.Call
-import retrofit2.Callback
-import retrofit2.Response
-import retrofit2.Retrofit
-import retrofit2.converter.gson.GsonConverterFactory
+
 
 class MainActivity : AppCompatActivity() {
     lateinit var usernameInput: EditText
-    lateinit var passwordInput: EditText
     lateinit var loginButton: Button
     lateinit var textRegister: TextView
     val usernameKey = "username"
@@ -42,8 +35,6 @@ class MainActivity : AppCompatActivity() {
 
 
         loginButton.setOnClickListener {
-            var username = usernameInput.text.toString()
-
             val checkUserIntent = Intent(this@MainActivity, FraudCheckUser::class.java)
             checkUserIntent.putExtra(usernameKey, usernameInput.text.toString())
             checkUserActivityResultLauncher.launch(checkUserIntent)

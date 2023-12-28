@@ -3,7 +3,6 @@ package com.example.frauddetectionlibrary
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.util.Log
 import android.widget.Button
 import android.widget.EditText
 import android.widget.TextView
@@ -26,8 +25,7 @@ class FraudLoginActivity : AppCompatActivity() {
 
         loginButton.setOnClickListener{
 //            var username = usernameInput.text.toString()
-            var username = "Hello this is from the second activity"
-            var password = passwordInput.text.toString()
+            val username = "Hello this is from the second activity"
             val intent = Intent()
             intent.putExtra("api_response", username)
             setResult(RESULT_OK,intent)

@@ -54,9 +54,6 @@ class RegistrationActivity : AppCompatActivity() {
                     "Value of the passwords ",
                     "First password $password Second password $confirmPassword"
                 )
-//                if(username.isEmpty() || password.isEmpty() || confirmPassword.isEmpty() || dateOfBirth.isEmpty() || gender.isEmpty()){
-//                    showAlert("Error", "Need to enter all the fields")
-//                }
                  if (password.equals(confirmPassword)) {
                     showSetPinDialog()
                 } else {

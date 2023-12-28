@@ -1,12 +1,10 @@
 package com.example.frauddetectionlibrary
 
-import android.content.Intent
+
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
-import android.widget.Button
 import android.widget.EditText
-import android.widget.TextView
 import androidx.appcompat.app.AlertDialog
 import retrofit2.Call
 import retrofit2.Callback

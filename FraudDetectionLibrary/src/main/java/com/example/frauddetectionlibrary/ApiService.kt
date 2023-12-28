@@ -13,15 +13,14 @@ interface ApiService {
     @POST("register")
     fun registerUser(@Body requestBody: RegisterBody): Call<RegisterResponse>
 
-    @POST("login")
-    fun loginUser(@Body requestBody: LoginBody): Call<LoginResponse>
+//    @POST("login")
+//    fun loginUser(@Body requestBody: LoginBody): Call<LoginResponse>
 
     @POST("checkUser")
     fun checkUser(@Body requestBody: CheckUserBody): Call<CheckUserResponse>
 
     @POST("loginWithPin")
     fun loginWithPin(@Body requestBody: CheckUserPinBody): Call<CheckUserPinResponse>
-
 
 }
 
@@ -30,13 +29,13 @@ data class CheckUserPinBody (
     val username: String,
     @SerializedName("pin")
     val pin: String
-
 )
 
 data class CheckUserPinResponse (
     @SerializedName("result")
     val result: String
 )
+
 data class CheckUserBody (
     @SerializedName("username")
     val username: String
@@ -47,15 +46,16 @@ data class CheckUserResponse (
     val result: String
 )
 
-
 data class RegisterResponse (
     @SerializedName("message")
     val message: String
 )
+
 data class LoginResponse (
     @SerializedName("token")
     val token: String
 )
+
 data class LoginBody (
     @SerializedName("username")
     val username: String,
