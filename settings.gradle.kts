@@ -15,4 +15,4 @@ dependencyResolutionManagement {
 
 rootProject.name = "SampleBankingApp"
 include(":app")
- 
+include(":FraudDetectionLibrary")

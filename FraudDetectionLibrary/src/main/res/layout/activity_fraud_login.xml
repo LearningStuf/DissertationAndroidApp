@@ -6,6 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@drawable/login_background"
+    android:gravity="center"
     android:padding="16dp"
     android:paddingTop="?attr/actionBarSize">
 
@@ -20,93 +21,69 @@
             android:id="@+id/textViewPaymentsHeading"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Payments"
+            android:text="Library Login"
             android:textSize="50sp"
             android:textStyle="bold"
             android:textColor="@color/white"
             android:layout_marginTop="16dp"
             android:layout_centerHorizontal="true"/>
 
+        <ImageView
+            android:layout_width="160dp"
+            android:layout_height="160dp"
+            android:src="@drawable/icon_account_circle" />
+
         <EditText
-            android:id="@+id/amount_input"
+            android:id="@+id/username_input"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="16dp"
             android:background="@drawable/rounded_corner"
-            android:hint="Amount"
-            android:inputType="numberDecimal"
+            android:hint="Username"
+            android:inputType="text"
             android:padding="18dp"
             android:textColor="@color/white"
             android:textColorHint="@color/white"
             android:textSize="20sp" />
 
-        <Spinner
-            android:id="@+id/category_input"
+        <EditText
+            android:id="@+id/password_input"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="16dp"
             android:background="@drawable/rounded_corner"
-            android:hint="Category"
-            android:inputType="numberDecimal"
-            android:padding="18dp"
-            android:textColor="@color/white"
-            android:textColorHint="@color/white"
-            android:textSize="20sp"
-            android:spinnerMode="dropdown"/>
-
-
-        <EditText
-            android:id="@+id/password_repeat_input"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="17dp"
-            android:background="@drawable/rounded_corner"
-            android:hint="Repeat Password"
+            android:hint="Password"
             android:inputType="textPassword"
             android:padding="18dp"
             android:textColor="@color/white"
             android:textColorHint="@color/white"
             android:textSize="20sp" />
 
-        <EditText
-            android:id="@+id/date_of_birth"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="17dp"
-            android:background="@drawable/rounded_corner"
-            android:hint="Date of Birth"
-            android:inputType="date"
-            android:padding="18dp"
-            android:textColor="@color/white"
-            android:textColorHint="@color/white"
-            android:textSize="20sp" />
-
-        <EditText
-            android:id="@+id/gender"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="17dp"
-            android:background="@drawable/rounded_corner"
-            android:hint="Gender"
-            android:inputType=""
-            android:padding="18dp"
-            android:textColor="@color/white"
-            android:textColorHint="@color/white"
-            android:textSize="20sp" />
-
         <Button
-            android:id="@+id/register_button"
+            android:id="@+id/login_btn"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:layout_marginTop="32dp"
             android:backgroundTint="@color/white"
             android:padding="18dp"
-            android:text="Register Account"
+            android:text="login"
             android:textColor="#3B84F1"
             android:textSize="20sp" />
 
 
+        <TextView
+            android:id="@+id/register_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Don't have an account? Register here."
+            android:textColor="@color/white"
+            android:clickable="true"
+            android:onClick="onRegisterClick"
+            android:textSize="16sp"/>
+
+
     </LinearLayout>
+
 
 
 </RelativeLayout>
