@@ -22,10 +22,10 @@ import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 
 class MainActivity : AppCompatActivity() {
-    lateinit var usernameInput  : EditText
-    lateinit var passwordInput  : EditText
-    lateinit var loginButton    : Button
-    lateinit var textRegister   : TextView
+    lateinit var usernameInput: EditText
+    lateinit var passwordInput: EditText
+    lateinit var loginButton: Button
+    lateinit var textRegister: TextView
     val usernameKey = "username"
     val checkUserResponse = "check_user"
 
@@ -45,16 +45,15 @@ class MainActivity : AppCompatActivity() {
         textRegister = findViewById(R.id.register_text)
 
 
-        loginButton.setOnClickListener{
+        loginButton.setOnClickListener {
             var username = usernameInput.text.toString()
-            var password = passwordInput.text.toString()
-            Log.i("Test credentials", "username: $username and Password $password")
+//            Log.i("Test credentials", "username: $username and Password $password")
 //            This is where we are adding the library code
 //            val intent = Intent(this@MainActivity, FraudLoginActivity::class.java)
 //            startActivity(intent)
 
             val checkUserIntent = Intent(this@MainActivity, FraudCheckUser::class.java)
-            checkUserIntent.putExtra(usernameKey,usernameInput.text.toString() )
+            checkUserIntent.putExtra(usernameKey, usernameInput.text.toString())
             checkUserActivityResultLauncher.launch(checkUserIntent)
 
 //            performLoginUser()
@@ -88,12 +87,10 @@ class MainActivity : AppCompatActivity() {
                 showAlert("Success", "User has been verified")
 
 
-            }
-            else {
+            } else {
                 showAlert("Failed", data?.getStringExtra(checkUserResponse).toString())
             }
         }
-
 
 
     private fun showAlert(title: String, message: String) {
@@ -101,12 +98,17 @@ class MainActivity : AppCompatActivity() {
         builder.setTitle(title)
             .setMessage(message)
             .setPositiveButton("OK") { dialog, _ ->
+                if(title.equals("Success")){
+                    val intent = Intent(this@MainActivity, PaymentsActivity::class.java)
+                    startActivity(intent)
+                }
                 dialog.dismiss()
             }
             .setIcon(android.R.drawable.ic_dialog_alert)
             .show()
 
     }
+
     private fun performLoginUser() {
 
         val requestBody = LoginBody(
@@ -119,17 +121,18 @@ class MainActivity : AppCompatActivity() {
                 call: Call<LoginResponse?>,
                 response: Response<LoginResponse?>
             ) {
-                if(response.code().equals(200)){
+                if (response.code().equals(200)) {
                     val editor = sharedPreferences.edit()
-                    editor.putString(usernameInput.text.toString(), response.body()?.token) // Replace "key" and "value" with your data
+                    editor.putString(
+                        usernameInput.text.toString(),
+                        response.body()?.token
+                    ) // Replace "key" and "value" with your data
                     editor.apply()
                     Log.i(usernameInput.text.toString(), "${response.body()?.token}")
                     val intent = Intent(this@MainActivity, PaymentsActivity::class.java)
                     startActivity(intent)
 
-                }
-
-                else{
+                } else {
                     showAlert("Error", "Incorrect credentials")
                 }
             }

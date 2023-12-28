@@ -1,12 +1,15 @@
 package com.example.samplebankingapp
 
+import android.app.Activity
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
 import android.widget.Button
 import android.widget.EditText
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AlertDialog
+import com.example.frauddetectionlibrary.FraudRegisterActivity
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -28,6 +31,11 @@ class RegistrationActivity : AppCompatActivity() {
         .build()
         .create(ApiService::class.java)
 
+    val usernameKey = "username"
+    val passwordKey = "password"
+    val dateOfBirthKey = "dob"
+    val genderKey = "gender"
+    val pinKey = "pin"
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -40,6 +48,8 @@ class RegistrationActivity : AppCompatActivity() {
         dateOfBirthInput = findViewById(R.id.date_of_birth)
         genderInput = findViewById(R.id.gender)
         registerButton = findViewById(R.id.register_button)
+
+
 
         registerButton.setOnClickListener {
             var username = usernameInput.text.toString()
@@ -102,9 +112,19 @@ class RegistrationActivity : AppCompatActivity() {
             val enteredPin = input.text.toString()
             // Handle the entered PIN here
             if (enteredPin.isNotBlank()) {
-                performRegisterUser(enteredPin)
+
+                val registerUserIntent = Intent(this@RegistrationActivity, FraudRegisterActivity::class.java)
+                registerUserIntent.putExtra(usernameKey,usernameInput.text.toString())
+                registerUserIntent.putExtra(passwordKey,passwordInput.text.toString())
+                registerUserIntent.putExtra(dateOfBirthKey,dateOfBirthInput.text.toString())
+                registerUserIntent.putExtra(genderKey,genderInput.text.toString())
+                registerUserIntent.putExtra(pinKey,enteredPin)
+
+                fraudRegisterActivityResultLauncher.launch(registerUserIntent)
+
+
             } else {
-                showAlert("Error", "You have entered an incorrect pin")
+                showAlert("Error", "Cannot Enter an empty pin")
             }
             dialog.dismiss()
         }
@@ -122,6 +142,19 @@ class RegistrationActivity : AppCompatActivity() {
 
 
     }
+
+
+    private val fraudRegisterActivityResultLauncher =
+        registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
+            val data = result.data
+            if (result.resultCode == Activity.RESULT_OK) {
+                showAlert("Success Registration", "User has been registered")
+            }
+            else {
+                showAlert("Failed", "User registration failed")
+            }
+        }
+
 
     private fun performHealthCheck() {
 
@@ -153,40 +186,5 @@ class RegistrationActivity : AppCompatActivity() {
 
     }
 
-    private fun performRegisterUser(pin : String) {
 
-        val requestBody = RegisterBody(
-            usernameInput.text.toString(),
-            passwordInput.text.toString(),
-            dateOfBirthInput.text.toString(),
-            genderInput.text.toString(),
-            pin
-        )
-        val retrofitData = retrofitBuilder.registerUser(requestBody)
-        retrofitData.enqueue(object : Callback<RegisterResponse?> {
-            override fun onResponse(
-                call: Call<RegisterResponse?>,
-                response: Response<RegisterResponse?>
-            ) {
-                val responseBody = response
-                if (response.code().equals(200)) {
-                    showAlert("Success Registration", "Your user has been registered")
-                }
-
-                else {
-                    showAlert("API Error", "There is an API error")
-                }
-
-            }
-
-
-            override fun onFailure(call: Call<RegisterResponse?>, t: Throwable) {
-                Log.i(
-                    "Register Failure",
-                    "Registration ${t.message.toString()}"
-                )
-            }
-        })
-
-    }
 }

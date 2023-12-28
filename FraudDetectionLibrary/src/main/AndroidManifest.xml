@@ -3,7 +3,7 @@
 
     <application android:networkSecurityConfig="@xml/network_security_config">
         <activity
-            android:name=".FraudRegisterActvity"
+            android:name=".FraudRegisterActivity"
             android:exported="false" />
         <activity
             android:name=".FraudCheckUser"
