@@ -25,7 +25,27 @@ interface ApiService {
     @POST("login")
     fun loginWithPassword(@Body requestBody: LoginUserBody): Call<LoginUserResponse>
 
+    @POST("fraud-score")
+    fun fraudPrediction(@Body requestBody: FraudBody): Call<FraudResponse>
+
 }
+
+
+data class FraudBody (
+    @SerializedName("amount")
+    val amount: Float,
+    @SerializedName("category")
+    val category: String,
+    @SerializedName("merchantId")
+    val merchantId: String,
+    @SerializedName("username")
+    val username: String,
+)
+
+data class FraudResponse (
+    @SerializedName("fraud")
+    val fraud: Int,
+)
 
 data class LoginUserBody (
     @SerializedName("username")

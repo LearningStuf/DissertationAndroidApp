@@ -12,6 +12,7 @@ import android.widget.EditText
 import android.widget.Spinner
 import android.widget.TextView
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.appcompat.app.AlertDialog
 import com.example.frauddetectionlibrary.FraudCheckUser
 import com.example.frauddetectionlibrary.FraudPaymentActivity
 
@@ -66,16 +67,30 @@ class PaymentsActivity : AppCompatActivity() {
 
     }
 
+
+    private fun showAlert(title: String, message: String) {
+        val builder = AlertDialog.Builder(this)
+        builder.setTitle(title)
+            .setMessage(message)
+            .setPositiveButton("OK") { dialog, _ ->
+                dialog.dismiss()
+            }
+            .setIcon(android.R.drawable.ic_dialog_alert)
+            .show()
+
+    }
+
+
     private val PaymentActivityResultLauncher =
         registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
             val data = result.data
             if (result.resultCode == Activity.RESULT_OK) {
 
-//                showAlert("Success", "User has been verified")
+                showAlert("Success", "Transaction Committed")
 
 
             } else {
-//                showAlert("Failed", data?.getStringExtra(checkUserResponse).toString())
+                showAlert("Failed", "Transaction Failed")
             }
         }
 }

@@ -2,6 +2,7 @@ package com.example.frauddetectionlibrary
 
 
 import android.annotation.SuppressLint
+import android.content.Context
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
@@ -167,6 +168,12 @@ class FraudCheckUser : AppCompatActivity() {
                         showSetPassDialog()
                     }
                     else {
+                        val sharedPreferences = getSharedPreferences("Login", Context.MODE_PRIVATE)
+
+                        val editor = sharedPreferences.edit()
+                        editor.putString("username", username) // Replace "key" and "value" with your data
+                        editor.apply()
+
                         intent.putExtra(apiResponseKey, response.body()?.result.toString())
                         setResult(RESULT_OK,intent)
                         finish()
@@ -205,6 +212,16 @@ class FraudCheckUser : AppCompatActivity() {
                 response: Response<LoginUserResponse?>
             ) {
                 if(response.code().equals(200)){
+
+                    // Get the SharedPreferences reference
+                    val sharedPreferences = getSharedPreferences("Login", Context.MODE_PRIVATE)
+
+                    val editor = sharedPreferences.edit()
+                    editor.putString("username", username) // Replace "key" and "value" with your data
+                    editor.apply()
+
+
+
                     intent.putExtra(apiResponseKey, response.body()?.result.toString())
                     setResult(RESULT_OK,intent)
                     finish()
