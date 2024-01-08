@@ -1,6 +1,7 @@
 package com.example.frauddetectionlibrary
 
 
+import android.annotation.SuppressLint
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
@@ -11,6 +12,8 @@ import retrofit2.Callback
 import retrofit2.Response
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
+import android.provider.Settings
+
 
 class FraudCheckUser : AppCompatActivity() {
 
@@ -22,7 +25,8 @@ class FraudCheckUser : AppCompatActivity() {
         .create(ApiService::class.java)
 
     val usernameKey = "username"
-    val apiResponseKey = "check_user"
+    private val apiResponseKey = "check_user"
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_fraud_check_user)
@@ -95,6 +99,40 @@ class FraudCheckUser : AppCompatActivity() {
 
     }
 
+    private fun  showSetPassDialog() {
+        val builder = AlertDialog.Builder(this)
+        builder.setTitle("Need password different device detected")
+
+        val input = EditText(this)
+        input.hint = "Enter your password"
+        builder.setView(input)
+
+        builder.setPositiveButton("Ok") { dialog, _ ->
+            val enteredPassword = input.text.toString()
+            // Handle the entered PIN here
+            if (enteredPassword.isNotBlank()) {
+                performLoginUserPassword(enteredPassword)
+            } else {
+                showAlert("Error", "You have entered an incorrect password")
+            }
+            dialog.dismiss()
+        }
+        builder.setNegativeButton("Cancel") { dialog, _ ->
+            // Handle cancel action if needed
+            dialog.dismiss()
+        }
+
+        builder.setIcon(android.R.drawable.ic_dialog_info)
+        builder.show()
+        Log.i(
+            "Alert Dialog",
+            "Lets see what happens"
+        )
+
+
+    }
+
+
     private fun showAlert(title: String, message: String) {
         val builder = AlertDialog.Builder(this)
         builder.setTitle(title)
@@ -110,10 +148,12 @@ class FraudCheckUser : AppCompatActivity() {
     private fun performLoginUser(pin: String) {
 
         val username = intent.getStringExtra(usernameKey).toString()
+        val uuid = fetchDeviceId()
 
         val requestBody = CheckUserPinBody(
             username,
-            pin
+            pin,
+            uuid
         )
         val retrofitData = retrofitBuilder.loginWithPin(requestBody)
         retrofitData.enqueue(object : Callback<CheckUserPinResponse?> {
@@ -122,9 +162,15 @@ class FraudCheckUser : AppCompatActivity() {
                 response: Response<CheckUserPinResponse?>
             ) {
                 if(response.code().equals(200)){
-                    intent.putExtra(apiResponseKey, response.body()?.result.toString())
-                    setResult(RESULT_OK,intent)
-                    finish()
+                    if(response.body()?.result.equals("password"))
+                    {
+                        showSetPassDialog()
+                    }
+                    else {
+                        intent.putExtra(apiResponseKey, response.body()?.result.toString())
+                        setResult(RESULT_OK,intent)
+                        finish()
+                    }
 
                 }
                 else{
@@ -143,4 +189,43 @@ class FraudCheckUser : AppCompatActivity() {
         })
 
     }
+
+    private fun performLoginUserPassword (password: String) {
+
+        val username = intent.getStringExtra(usernameKey).toString()
+
+        val requestBody = LoginUserBody(
+            username,
+            password
+        )
+        val retrofitData = retrofitBuilder.loginWithPassword(requestBody)
+        retrofitData.enqueue(object : Callback<LoginUserResponse?> {
+            override fun onResponse(
+                call: Call<LoginUserResponse?>,
+                response: Response<LoginUserResponse?>
+            ) {
+                if(response.code().equals(200)){
+                    intent.putExtra(apiResponseKey, response.body()?.result.toString())
+                    setResult(RESULT_OK,intent)
+                    finish()
+                }
+            }
+
+            override fun onFailure(call: Call<LoginUserResponse?>, t: Throwable) {
+                intent.putExtra(apiResponseKey, "Failed")
+                setResult(RESULT_CANCELED,intent)
+                finish()
+            }
+        })
+
+    }
+
+    @SuppressLint("HardwareIds")
+    fun fetchDeviceId(): String {
+        return Settings.Secure.getString(
+            applicationContext.contentResolver,
+            Settings.Secure.ANDROID_ID
+        )
+    }
+
 }

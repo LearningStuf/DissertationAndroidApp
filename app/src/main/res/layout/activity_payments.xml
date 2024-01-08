@@ -40,68 +40,42 @@
             android:textColorHint="@color/white"
             android:textSize="20sp" />
 
+        <EditText
+            android:id="@+id/merchant_id"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:background="@drawable/rounded_corner"
+            android:hint="Merchant"
+            android:inputType="text"
+            android:padding="18dp"
+            android:textColor="@color/white"
+            android:textColorHint="@color/white"
+            android:textSize="20sp" />
+
+
         <Spinner
             android:id="@+id/category_input"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="16dp"
             android:background="@drawable/rounded_corner"
-            android:hint="Category"
-            android:inputType="numberDecimal"
             android:padding="18dp"
             android:textColor="@color/white"
-            android:textColorHint="@color/white"
             android:textSize="20sp"
-            android:spinnerMode="dropdown"/>
+            android:spinnerMode="dropdown" />
 
 
-        <EditText
-            android:id="@+id/password_repeat_input"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="17dp"
-            android:background="@drawable/rounded_corner"
-            android:hint="Repeat Password"
-            android:inputType="textPassword"
-            android:padding="18dp"
-            android:textColor="@color/white"
-            android:textColorHint="@color/white"
-            android:textSize="20sp" />
 
-        <EditText
-            android:id="@+id/date_of_birth"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="17dp"
-            android:background="@drawable/rounded_corner"
-            android:hint="Date of Birth"
-            android:inputType="date"
-            android:padding="18dp"
-            android:textColor="@color/white"
-            android:textColorHint="@color/white"
-            android:textSize="20sp" />
-
-        <EditText
-            android:id="@+id/gender"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="17dp"
-            android:background="@drawable/rounded_corner"
-            android:hint="Gender"
-            android:inputType=""
-            android:padding="18dp"
-            android:textColor="@color/white"
-            android:textColorHint="@color/white"
-            android:textSize="20sp" />
 
         <Button
-            android:id="@+id/register_button"
+            android:id="@+id/payment_button"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:layout_marginTop="32dp"
             android:backgroundTint="@color/white"
             android:padding="18dp"
-            android:text="Register Account"
+            android:text="Make Payment"
             android:textColor="#3B84F1"
             android:textSize="20sp" />
 

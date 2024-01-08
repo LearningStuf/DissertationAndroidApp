@@ -1,5 +1,6 @@
 package com.example.frauddetectionlibrary
 
+import android.annotation.SuppressLint
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import retrofit2.Call
@@ -7,6 +8,8 @@ import retrofit2.Callback
 import retrofit2.Response
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
+import android.provider.Settings
+
 
 class FraudRegisterActivity : AppCompatActivity() {
 
@@ -32,9 +35,11 @@ class FraudRegisterActivity : AppCompatActivity() {
         val dateOfBirth = intent.getStringExtra(dateOfBirthKey).toString()
         val gender = intent.getStringExtra(genderKey).toString()
         val pin = intent.getStringExtra(pinKey).toString()
+        val uuid = fetchDeviceId()
 
 
-        val requestBody = RegisterBody(username,password,dateOfBirth,gender,pin)
+
+        val requestBody = RegisterBody(username,password,dateOfBirth,gender,pin,uuid)
         val retrofitData = retrofitBuilder.registerUser(requestBody)
         retrofitData.enqueue(object : Callback<RegisterResponse?> {
             override fun onResponse(
@@ -63,4 +68,12 @@ class FraudRegisterActivity : AppCompatActivity() {
 
 
     }
+    @SuppressLint("HardwareIds")
+    fun fetchDeviceId(): String {
+        return Settings.Secure.getString(
+            applicationContext.contentResolver,
+            Settings.Secure.ANDROID_ID
+        )
+    }
+
 }

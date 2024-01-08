@@ -22,13 +22,31 @@ interface ApiService {
     @POST("loginWithPin")
     fun loginWithPin(@Body requestBody: CheckUserPinBody): Call<CheckUserPinResponse>
 
+    @POST("login")
+    fun loginWithPassword(@Body requestBody: LoginUserBody): Call<LoginUserResponse>
+
 }
+
+data class LoginUserBody (
+    @SerializedName("username")
+    val username: String,
+    @SerializedName("password")
+    val pin: String
+)
+
+data class LoginUserResponse (
+    @SerializedName("result")
+    val result: String
+)
+
 
 data class CheckUserPinBody (
     @SerializedName("username")
     val username: String,
     @SerializedName("pin")
-    val pin: String
+    val pin: String,
+    @SerializedName("uuid")
+    val uuid: String
 )
 
 data class CheckUserPinResponse (
@@ -73,7 +91,9 @@ data class RegisterBody (
     @SerializedName("gender")
     val gender: String,
     @SerializedName("pin")
-    val pin: String
+    val pin: String,
+    @SerializedName("uuid")
+    val uuid: String
 )
 
 data class HealthResponse (

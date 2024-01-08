@@ -19,10 +19,12 @@ class MainActivity : AppCompatActivity() {
     lateinit var usernameInput: EditText
     lateinit var loginButton: Button
     lateinit var textRegister: TextView
+
     val usernameKey = "username"
     val checkUserResponse = "check_user"
 
     private lateinit var sharedPreferences: SharedPreferences
+
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
